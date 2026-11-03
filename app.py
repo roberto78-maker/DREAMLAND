@@ -174,7 +174,7 @@ with tab_registro:
             placeholder="Selecione as sensações e estados observados..."
         )
         
-        st.subheader("3. O Veredito (A Vontade)")
+        st.subheader("3. A Vontade")
         resposta = st.radio("Ação Tomada no Tribunal Mental", [
             "Bitul (Corte Hermético / Não-Engajamento imediato)", 
             "Alquimia da Centelha (Transformou raiva em foco técnico no TCO)",
@@ -185,7 +185,7 @@ with tab_registro:
         
         duracao = st.number_input("Duração do Inquérito (Minutos sequestrados)", min_value=0.0, step=0.5)
         
-        submit = st.form_submit_button("Arquivar Inquérito no Turso")
+        submit = st.form_submit_button("Ação")
         
         if submit:
             timestamp = datetime.now().isoformat()
