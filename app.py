@@ -306,3 +306,11 @@ with tab_dashboard:
             | **Ruído Catastrófico e Aleatório** | *Mazik* (Exaustão) | **Bitul** (Desdém) | Reconhecer o biológico: *"Apenas sono e fadiga falando."* Ignorar. |
             """)
 
+        st.divider()
+        with st.expander("⚙️ Gerenciar Banco de Dados"):
+            st.caption("Aviso: Esta ação apagará permanentemente todos os registros de teste arquivados até o momento.")
+            if st.button("🗑️ Limpar Todos os Registros de Teste", type="secondary"):
+                db.execute("DELETE FROM auditoria_mental")
+                st.success("Todos os registros foram excluídos com sucesso!")
+                st.rerun()
+
