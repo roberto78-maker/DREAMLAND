@@ -112,12 +112,20 @@ with tab_registro:
     with st.form("form_auditoria"):
         st.subheader("1. O Cenário")
         contexto = st.selectbox("Onde a mente foi interceptada?", [
-            "Plantão PMPR (Cartório TCO)", 
-            "Pós-Plantão (Exaustão / Trânsito)", 
-            "Estudos (Direito / Contábeis)", 
-            "Web Coding / Projetos IA", 
+            "Casa da Sogra",
+            "Casa de Parentes",
+            "Clínicas / Consultórios",
+            "Estudos (Direito / Contábeis)",
             "Igreja Assembleia de Deus (Culto)",
-            "Tempo com a Família (Esposa/Filha)"
+            "Lazer",
+            "Mercado / Compras",
+            "Outros Locais",
+            "Parque / Ar Livre",
+            "Plantão PMPR (Cartório TCO)",
+            "Pós-Plantão (Exaustão / Trânsito)",
+            "Tempo com a Família (Esposa/Filha)",
+            "TV & Celular (Telas / Redes)",
+            "Web Coding / Projetos IA"
         ])
         
         fadiga = st.slider("Carga Miasmática / Fadiga Físico-Mental (1-5)", 1, 5, 3)
