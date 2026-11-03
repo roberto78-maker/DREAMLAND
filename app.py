@@ -49,14 +49,19 @@ def get_secret(key: str, default: str = "") -> str:
 
 @st.cache_resource
 def get_db_client():
-    url = get_secret("TURSO_DATABASE_URL", "file:banco_local.db")
-    token = get_secret("TURSO_AUTH_TOKEN", "")
+    url = get_secret("TURSO_DATABASE_URL", "file:banco_local.db").strip().strip("'\"")
+    token = get_secret("TURSO_AUTH_TOKEN", "").strip().strip("'\"")
     
     # libsql-client utiliza o esquema 'file:' para bancos SQLite locais
     if url.startswith("sqlite:///"):
         url = url.replace("sqlite:///", "file:")
     elif url.startswith("sqlite://"):
         url = url.replace("sqlite://", "file:")
+    
+    # Converte libsql:// para https:// para evitar bloqueios de WebSocket (WSServerHandshakeError)
+    # na nuvem do Streamlit. O Turso suporta requisições HTTP seguras nativamente.
+    if url.startswith("libsql://"):
+        url = url.replace("libsql://", "https://")
 
     if url.startswith("file:"):
         client = libsql_client.create_client_sync(url)
@@ -78,7 +83,22 @@ def get_db_client():
     """)
     return client
 
-db = get_db_client()
+try:
+    db = get_db_client()
+except Exception as e:
+    st.error("⚠️ **Falha de Conexão com o Banco de Dados (Turso)**")
+    st.warning(
+        f"**Detalhe do Erro:** `{e}`\n\n"
+        "**Como verificar no Streamlit Cloud:**\n"
+        "1. No canto inferior direito, clique em **Manage app** > **⋮** > **Settings** > **Secrets**.\n"
+        "2. Confira se as variáveis estão no formato:\n"
+        "```toml\n"
+        "TURSO_DATABASE_URL = \"https://seu-banco-seu-usuario.turso.io\"\n"
+        "TURSO_AUTH_TOKEN = \"seu_token_aqui\"\n"
+        "```\n"
+        "*(Dica: use `https://` em vez de `libsql://` para maior estabilidade)*."
+    )
+    st.stop()
 
 # ==========================================
 # INTERFACE DO UTILIZADOR
