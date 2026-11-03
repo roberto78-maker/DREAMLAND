@@ -167,6 +167,7 @@ with tab_registro:
                 "Sede",
                 "Sem foco",
                 "Sem paciência",
+                "Sem problemas (Corpo relaxado / Normal)",
                 "Sem vontade",
                 "Sono"
             ],
@@ -177,6 +178,7 @@ with tab_registro:
         resposta = st.radio("Ação Tomada no Tribunal Mental", [
             "Bitul (Corte Hermético / Não-Engajamento imediato)", 
             "Alquimia da Centelha (Transformou raiva em foco técnico no TCO)",
+            "Substituição Ativa (Ignorou o intruso e seguiu com outro pensamento)",
             "Interação (Debateu com o pensamento, gerou atrito)", 
             "Concessão (Cedeu: Julgou, fofocou ou buscou dopamina)"
         ])
@@ -210,11 +212,13 @@ with tab_dashboard:
         total = len(df)
         sucessos_corte = len(df[df["resposta"].str.contains("Bitul")])
         sucessos_alquimia = len(df[df["resposta"].str.contains("Alquimia")])
+        sucessos_substituicao = len(df[df["resposta"].str.contains("Substituição|Ignorou")])
+        vitorias_totais = sucessos_corte + sucessos_alquimia + sucessos_substituicao
         concessoes = len(df[df["resposta"].str.contains("Concessão")])
         
         c1, c2, c3 = st.columns(3)
         c1.metric("Intrusões Totais", total)
-        c2.metric("Vitórias (Corte/Alquimia)", sucessos_corte + sucessos_alquimia)
+        c2.metric("Vitórias (Corte/Alquimia/Substituição)", vitorias_totais)
         c3.metric("Concessões (Toxidade)", concessoes)
         
         st.divider()
@@ -246,6 +250,8 @@ with tab_dashboard:
                 color_discrete_map[r] = "#d4af37"
             elif "Alquimia" in r:
                 color_discrete_map[r] = "#00b4d8"
+            elif "Substituição" in r or "Ignorou" in r:
+                color_discrete_map[r] = "#2a9d8f"
             elif "Interação" in r:
                 color_discrete_map[r] = "#f4a261"
             elif "Concessão" in r:
