@@ -205,3 +205,76 @@ with tab_dashboard:
         resposta_counts = df['resposta'].value_counts()
         st.bar_chart(resposta_counts, color="#b8860b")
 
+        st.divider()
+
+        st.markdown("### ⚔️ Relação: Pensamento Intrusivo vs. Ação Tomada")
+        st.caption("Mapeamento do combate: veja onde você aplicou domínio (Bitul/Alquimia) ou onde houve atrito/concessão para cada ruído mental.")
+        
+        # Agrupamento para gráfico empilhado
+        cruzamento = df.groupby(['tema', 'resposta']).size().reset_index(name='contagem')
+        
+        # Paleta com significado alquímico:
+        # Bitul: Dourado (#d4af37)
+        # Alquimia: Ciano / Esmeralda (#00b4d8)
+        # Interação: Âmbar (#f4a261)
+        # Concessão: Vermelho Carmesim (#e63946)
+        color_discrete_map = {}
+        for r in df['resposta'].unique():
+            if "Bitul" in r:
+                color_discrete_map[r] = "#d4af37"
+            elif "Alquimia" in r:
+                color_discrete_map[r] = "#00b4d8"
+            elif "Interação" in r:
+                color_discrete_map[r] = "#f4a261"
+            elif "Concessão" in r:
+                color_discrete_map[r] = "#e63946"
+            else:
+                color_discrete_map[r] = "#888888"
+
+        fig = px.bar(
+            cruzamento,
+            y="tema",
+            x="contagem",
+            color="resposta",
+            orientation="h",
+            barmode="stack",
+            color_discrete_map=color_discrete_map,
+            labels={"tema": "Tema do Ruído", "contagem": "Ocorrências", "resposta": "Ação Tomada"}
+        )
+
+        fig.update_layout(
+            plot_bgcolor="#0a0a0a",
+            paper_bgcolor="#0a0a0a",
+            font=dict(color="#e0e0e0", family="Courier New"),
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="center",
+                x=0.5
+            ),
+            xaxis=dict(title="Quantidade de Batalhas", gridcolor="#222222"),
+            yaxis=dict(title="", gridcolor="#222222", autorange="reversed"),
+            margin=dict(l=10, r=10, t=40, b=10)
+        )
+        
+        st.plotly_chart(fig, use_container_width=True)
+
+        # Matriz tabular de ocorrências
+        st.markdown("#### 📋 Matriz Numérica de Batalhas")
+        matriz = pd.crosstab(df['tema'], df['resposta'], margins=True, margins_name="Total")
+        st.dataframe(matriz, use_container_width=True)
+
+        with st.expander("📖 Manual Tático: Guia de Combate por Tipo de Pensamento"):
+            st.markdown("""
+            | Pensamento Intrusivo | Categoria | Ação Soberana Recomendada | Postura Prática |
+            | :--- | :--- | :--- | :--- |
+            | **Vontade de julgar (Lashon Hará)** | *Yesh* (Ego) | **Bitul** (Corte) | Silêncio intencional: *"Não sou o juiz do universo."* |
+            | **Carga Tóxica / Raiva de Ocorrência** | *Mazik* (Veneno) | **Alquimia da Centelha** | Transmutar a adrenalina em precisão cirúrgica na redação do TCO. |
+            | **Debugging Mental sem fim** | *Mão Fechada* (Controle) | **Bitul** (Entrega) | Encerrar o ciclo: *"Dever cumprido com excelência técnica."* |
+            | **Nostalgia / Fuga para o passado** | *Mão Fechada* (Medo) | **Bitul** (Presença) | Ancorar no agora: *"O passado não existe; foco na missão de hoje."* |
+            | **Sequestro Dopaminérgico / Luxúria** | *A Sedutora* (Alívio) | **Bitul** (Não-Engajamento) | Corte radical: afastar o celular, mudar de ambiente físico. |
+            | **Frustração com Hierarquia / Ego** | *Yesh* (Ferida) | **Alquimia da Centelha** | Converter contrariedade em combustível para estudos (Direito/Contábeis). |
+            | **Ruído Catastrófico e Aleatório** | *Mazik* (Exaustão) | **Bitul** (Desdém) | Reconhecer o biológico: *"Apenas sono e fadiga falando."* Ignorar. |
+            """)
+
