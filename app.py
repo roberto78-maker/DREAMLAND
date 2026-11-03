@@ -128,7 +128,7 @@ with tab_registro:
             "Web Coding / Projetos IA"
         ])
         
-        fadiga = st.slider("Carga Miasmática / Fadiga Físico-Mental (1-5)", 1, 5, 3)
+        fadiga = st.radio("Nível de Carga", options=[1, 2, 3, 4, 5], index=2, horizontal=True)
 
         st.subheader("2. O Ruído")
         tema = st.selectbox("Tema do Pensamento Intrusivo", [
