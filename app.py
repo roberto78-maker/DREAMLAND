@@ -109,7 +109,7 @@ st.title("Experimento Dreamland")
 tab_registro, tab_dashboard = st.tabs(["👁️ O Observador (Registar)", "📊 A Balança (Análise)"])
 
 with tab_registro:
-    with st.form("form_auditoria"):
+    with st.form("form_auditoria", clear_on_submit=True):
         st.subheader("1. O Cenário")
         contexto = st.selectbox("Onde a mente foi interceptada?", [
             "Casa da Sogra",
@@ -197,7 +197,7 @@ with tab_registro:
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
                 (timestamp, contexto, fadiga, tema, categoria, somat_final, resposta, duracao)
             )
-            st.success("O pensamento foi dissecado e arquivado. Ordem restaurada.")
+            st.success("Ação registrada com sucesso. Ordem restaurada.")
 
 with tab_dashboard:
     resultado = db.execute("SELECT * FROM auditoria_mental")
