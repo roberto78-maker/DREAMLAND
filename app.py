@@ -7,7 +7,7 @@ import plotly.express as px
 # ==========================================
 # CONFIGURAÇÃO DE PÁGINA E TEMA HERMÉTICO
 # ==========================================
-st.set_page_config(page_title="Auditoria da Alma", page_icon="⚖️", layout="centered")
+st.set_page_config(page_title="Experimento Dreamland", layout="centered")
 
 st.markdown("""
     <style>
@@ -104,8 +104,7 @@ except Exception as e:
 # ==========================================
 # INTERFACE DO UTILIZADOR
 # ==========================================
-st.title("⚖️ Tribunal de Cheshbon HaNefesh")
-st.markdown("*Solve et Coagula: O mapeamento alquímico da mente.*")
+st.title("Experimento Dreamland")
 
 tab_registro, tab_dashboard = st.tabs(["👁️ O Observador (Registar)", "📊 A Balança (Análise)"])
 
@@ -131,7 +130,7 @@ with tab_registro:
         
         fadiga = st.slider("Carga Miasmática / Fadiga Físico-Mental (1-5)", 1, 5, 3)
 
-        st.subheader("2. A Petição do Promotor (O Ruído)")
+        st.subheader("2. O Ruído")
         tema = st.selectbox("Tema do Pensamento Intrusivo", [
             "Vontade de julgar (Lashon Hará) / Crítica",
             "Carga Tóxica / Raiva de Ocorrência Policial",
