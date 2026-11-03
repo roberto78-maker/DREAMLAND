@@ -32,7 +32,7 @@ st.markdown("""
         color: #ffffff;
         box-shadow: 0px 0px 10px #d4af37;
     }
-    .stSelectbox label, .stSlider label, .stTextInput label, .stRadio label {
+    .stSelectbox label, .stSlider label, .stTextInput label, .stRadio label, .stMultiSelect label {
         color: #b8860b !important;
         font-weight: bold;
     }
@@ -149,7 +149,29 @@ with tab_registro:
             "Mazik (Ruído puro de exaustão)"
         ])
         
-        somatizacao = st.text_input("Somatização Física (Registo do Corpo)", placeholder="Ex: Mandíbula travada, peito pesado.")
+        somatizacao = st.multiselect(
+            "Somatização Física & Estado Psíquico (Selecione um ou mais)",
+            [
+                "Ardência nos olhos",
+                "Cansaço",
+                "Corpo dolorido",
+                "Dor de cabeça",
+                "Estressado",
+                "Fadiga",
+                "Falando demais",
+                "Fome",
+                "Mandíbula travada",
+                "Ouvindo pouco",
+                "Pensativo demais",
+                "Procrastinando",
+                "Sede",
+                "Sem foco",
+                "Sem paciência",
+                "Sem vontade",
+                "Sono"
+            ],
+            placeholder="Selecione as sensações e estados observados..."
+        )
         
         st.subheader("3. O Veredito (A Vontade)")
         resposta = st.radio("Ação Tomada no Tribunal Mental", [
@@ -165,7 +187,7 @@ with tab_registro:
         
         if submit:
             timestamp = datetime.now().isoformat()
-            somat_final = somatizacao if somatizacao else "Nenhuma"
+            somat_final = ", ".join(somatizacao) if somatizacao else "Nenhuma"
             
             db.execute(
                 """INSERT INTO auditoria_mental 
