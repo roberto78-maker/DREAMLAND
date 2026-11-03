@@ -169,7 +169,8 @@ with tab_registro:
                 "Sem paciência",
                 "Sem problemas (Corpo relaxado / Normal)",
                 "Sem vontade",
-                "Sono"
+                "Sono",
+                "Zumbido no ouvido"
             ],
             placeholder="Selecione as sensações e estados observados..."
         )
